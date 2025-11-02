@@ -1,1 +1,2 @@
-
+Тг бот
+@luckbetterbot
