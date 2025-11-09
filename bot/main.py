@@ -1,3 +1,5 @@
+import time
+
 import telebot, random
 
 from telebot import TeleBot
@@ -18,9 +20,32 @@ citat_stethem = [
 ]
 
 citat_coin = [
-    'решка',
-    'орёл'
+    'Выпала - решка',
+    'Выпал - орёл'
 ]
+
+
+@bot.message_handler(commands=['timer'])
+def set_timer(message):
+    try:
+        seconds = int(message.text.split()[1])
+        if seconds > 300:
+            bot.send_message(message.chat.id, 'Сдишком долго')
+            return
+        bot.send_message(message.chat.id, f'Таймер установлен на {seconds} секунд')
+        time.sleep(seconds)
+        bot.send_message(message.chat.id, f'Время вышло.')
+    except:
+        bot.send_message(message.chat.id, f'Что-бы зделать таймер используй команду /timer (время в секундах)')
+
+
+@bot.message_handler(commands=['cyb'])
+def cyb(message):
+    bot.send_message(message.chat.id, 'Выпало : ' + str(random.randint(1, 6)))
+
+@bot.message_handler(content_types=['voice'])
+def handle_voice(message):
+    bot.reply_to(message, "Пиши текстом.")
 
 
 @bot.message_handler(commands=['start'])
@@ -28,12 +53,9 @@ def start(message):
     bot.send_message(message.chat.id, 'Привет.Я твой бот на векиииии.Напиши  /help  для список команд')
 
 
-
-
-
 @bot.message_handler(commands=['help'])
 def help(message):
-    bot.send_message(message.chat.id, '/start - приветстиве\n/help - список команд\n/citat - зачитование цитаты\n/coin - подкинуть монетку')
+    bot.send_message(message.chat.id, '/start - приветстиве\n/help - список команд\n/citat - зачитование цитаты\n/coin - подкинуть монетку\n/cyb - бросить кубик\n/timer - Заведи таймер. После комады напиши время(в секундах)')
 
 
 @bot.message_handler(commands=['citat'])
@@ -42,13 +64,12 @@ def citat(message):
 
 @bot.message_handler(commands=['coin'])
 def coin(message):
-    bot.send_message(message.chat.id, 'Выпал : ' + random.choice(citat_coin))
+    bot.send_message(message.chat.id, random.choice(citat_coin))
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     text = message.text.lower()
     if text == 'привет':
         bot.send_message(message.chat.id, 'Пппппппппррррррррриииииииииввввввввееееееееттттттт')
-
 
 bot.polling()
