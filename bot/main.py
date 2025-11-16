@@ -24,6 +24,13 @@ citat_coin = [
     'Выпал - орёл'
 ]
 
+@bot.message_handler(commands=['password'])
+def password(message):
+    lenght = 12
+    chars = 'qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVNBM1234567890!@#$%^&*()'
+    password = ''.join(random.sample(chars, lenght))
+    bot.send_message(message.chat.id, f'Ваш пароль : {password}')
+
 
 @bot.message_handler(commands=['timer'])
 def set_timer(message):
@@ -55,7 +62,7 @@ def start(message):
 
 @bot.message_handler(commands=['help'])
 def help(message):
-    bot.send_message(message.chat.id, '/start - приветстиве\n/help - список команд\n/citat - зачитование цитаты\n/coin - подкинуть монетку\n/cyb - бросить кубик\n/timer - Заведи таймер. После комады напиши время(в секундах)')
+    bot.send_message(message.chat.id, '/start - приветстиве\n/help - список команд\n/citat - зачитование цитаты\n/coin - подкинуть монетку\n/cyb - бросить кубик\n/timer - Заведи таймер. После комады напиши время(в секундах)\n/password - сгенерировать пароль')
 
 
 @bot.message_handler(commands=['citat'])
@@ -71,5 +78,6 @@ def handle_text(message):
     text = message.text.lower()
     if text == 'привет':
         bot.send_message(message.chat.id, 'Пппппппппррррррррриииииииииввввввввееееееееттттттт')
+
 
 bot.polling()
